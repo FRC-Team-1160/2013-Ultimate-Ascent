@@ -1,0 +1,6 @@
+ds1 = slot 2
+ds2 = slot 4
+
+
+ds1,3 = ldt
+ds2, 3 = rdt
