@@ -81,8 +81,8 @@ public interface Constants {
 				double P_LEFT_MIN = .2;
 		// Arm system
 			// Arm
-				int A_SERVO_CHAN = 8;                    // also bs
-				int A_SERVO_CAR =2;                        // just to stop a pwm error
+				int A_MOTOR_CHAN = 8;                    // also bs
+				int A_MOTOR_CAR =2;                        // just to stop a pwm error
 				double A_SERVO_HOME = .5;
 				double A_SERVO_MAX = .9;
 				double A_SERVO_MIN = .2;
@@ -98,5 +98,17 @@ public interface Constants {
 		// Joysticks
 				int HUTCH_STICK = 1;
 				int COOKER_STICK_1 = 2;
-			                   int COOKER_STICK_2 = 3;
+				int COOKER_STICK_2 = 3;
+		//Pot Constants
+				int TOP_PULLEY_CHAN = 1;
+				double TOP_PULLEY_MIN = 0;     //Made up for now
+				double TOP_PULLEY_MAX = 100;   // TODO TEST
+
+				int LEFT_PULLEY_CHAN = 2;
+				double LEFT_PULLEY_MIN = 0;
+				double LEFT_PULLEY_MAX = 100;
+				
+				int RIGHT_PULLEY_CHAN = 3;
+				double RIGHT_PULLEY_MIN = 0;
+				double RIGHT_PULLEY_MAX = 100;
 }		

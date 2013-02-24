@@ -28,8 +28,15 @@ public class OutputManager {
 	 * These are all of the actuators on our bot
 	 * they will be initialized in the constructor
 	 */
+
+	/*
+	 * Working on cleaning this shit up... 
+	 * by adding classes for us just to output to...
+	 * this will also help with the pid code
+	 * if it needs to be written
+	 */
 	
-	private Servo armServo;
+	
 	private Servo gripperServo;
 	private DigitalServo topPulleyServo;
 	private Servo topPulleyLock;
@@ -47,7 +54,6 @@ public class OutputManager {
 	private RobotCommand currentCommand;
 	private static OutputManager _INSTANCE;
 	private OutputManager(){
-		armServo = new Servo(Constants.A_SERVO_CAR, Constants.A_SERVO_CHAN);
 		gripperServo = new Servo(Constants.G_SERVO_CAR, Constants.G_SERVO_CHAN);
 		topPulleyServo = new DigitalServo(Constants.P_TOP_SERVO_CAR, Constants.P_TOP_SERVO_CHAN);
 		topPulleyLock = new Servo(Constants.P_TOP_LOCK_CAR, Constants.P_TOP_LOCK_CHAN);
@@ -76,7 +82,6 @@ public class OutputManager {
 		setArm();
 	}
 	private void setArm() {
-		this.armServo.set(currentCommand.armCommand.angle);
 		if(currentCommand.armCommand.grip){
 			this.gripperServo.set(Constants.G_SERVO_GRIP);
 		}else{

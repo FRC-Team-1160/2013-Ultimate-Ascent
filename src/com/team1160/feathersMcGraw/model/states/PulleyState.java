@@ -9,5 +9,7 @@ package com.team1160.feathersMcGraw.model.states;
  * @author Wallace
  */
 public class PulleyState {
-    
+	public boolean locked;
+	public double angle;
+	public double length;
 }

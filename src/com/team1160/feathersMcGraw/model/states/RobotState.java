@@ -9,5 +9,7 @@ package com.team1160.feathersMcGraw.model.states;
  * @author Wallace
  */
 public class RobotState {
-    
+	public DrivetrainState dt;
+	public PulleySystemState ps;
+	public ArmState as;
 }

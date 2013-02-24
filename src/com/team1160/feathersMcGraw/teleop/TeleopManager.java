@@ -137,50 +137,50 @@ public class TeleopManager {
                   
                   }
                   
-                  private double getBeta(boolean floor, boolean middle, double alpha, double T){ 
+                  private double getTapeAngle(boolean floor, boolean middle, double frameAngle, double T){ 
                       if(floor){
                     	  if(middle){
-                    		  return 0;
+                    		  return 0;   //TODO might need to put not 0
                     	  }else if(T < 11.1){
-                    		return alpha;  
+                    		return 90-frameAngle;  
                     	  }else{
-                    		  if(alpha <= 20){
-                    			  return Math.toDegrees(Math.asin((30-12.3*Math.sin(alpha))/T));
+                    		  if(frameAngle <= 20){
+                    			  return Math.toDegrees(Math.asin((30-12.3*Math.sin(frameAngle))/T));
                     		  }else{
-                    			  return Math.toDegrees(Math.asin((30-18.9*Math.sin(alpha))/T));
+                    			  return Math.toDegrees(Math.asin((30-18.9*Math.sin(frameAngle))/T));
                          }
                      }
                       }else{
                     	  
-                    	  if(T<16.3){
-                    		  return alpha;
+                    	  if(T<16.3){    //TODO add angle condition once found
+                    		  return 90-frameAngle;
                     	  }
 
-                    	  if(alpha != 0) k5 = 1/Math.tan(alpha);
+                    	  if(frameAngle != 0) k5 = 1/Math.tan(frameAngle);
                     	  else k5 = 0;
                     	  a = (1+Math.pow(k5, 2));
                     	  if(middle){
                     		  k1 = 9.5;
-                    		  k4 = k1/Math.sin(alpha);
+                    		  k4 = k1/Math.sin(frameAngle);
                     	  }
                     	  else{
                     		  k1 = 1.25;
-                    		  k4 = k1/Math.sin(alpha);
+                    		  k4 = k1/Math.sin(frameAngle);
                     	  }
                     	  b = -2*(k2 + k4*k5 + k3*k5);
                     	  c = Math.pow(k2, 2)+Math.pow(k3, 2)+Math.pow(k4, 2)+2*(k3*k4) - Math.pow(T,2);
                     	  x2 = (-b-Math.sqrt((Math.pow(b,2)-4*a*c)))/2*a;
                     	  m2 = Math.atan((k2-x2)/(k3+k4-k5*x2));
-                    	  return m2-alpha;
+                    	  return m2-frameAngle;
                       }
                       
                   	}
                   
-                  private double getGamma(double beta, double T, boolean middle){
+                  private double getServoAngle(double tapeAngle, double T, boolean middle){
                 	  if(middle){
-                		  return 40-Math.atan((4.5-T*Math.sin(beta)/T*Math.cos(beta))+1.52*T);
+                		  return 40-Math.atan((4.5-T*Math.sin(tapeAngle)/T*Math.cos(tapeAngle))+1.52*T);
                 	  }else{
-                		  return 59 - Math.atan((4.6-T*Math.sin(beta)/(3+T*Math.cos(beta)))+1.94*T);
+                		  return 59 - Math.atan((4.6-T*Math.sin(tapeAngle)/(3+T*Math.cos(tapeAngle)))+1.94*T);
                 	  }
                   }
                   
@@ -238,29 +238,6 @@ public class TeleopManager {
 		return toggle;
                   }
         
-                 public double findAngle(int stage, int pulley, double length){
-                     /*
-                      * We kept burning out servos by letting our robot hang at an
-                      * angle different to what the servos wanted. So we tested to
-                      * create functions for what angle to be at based on length
-                      * of pulley and stage
-                      */
-                     
-                     //Currently empty
-                     
-                     double angle = 0;
-                                     
-                      return angle;
-                 }
-                 
-                 public double findAngle(int stage, double angle, int pulley){
-                    /*
-                     * Same as above how ever we are working on multiple ways to control it
-                     */
-                     double a = 0;
-                 
-                    return a;
-                 }
         
                   public String toString(){
 		String output = "";
