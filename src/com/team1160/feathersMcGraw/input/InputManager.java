@@ -4,6 +4,8 @@ import com.team1160.feathersMcGraw.api.Constants;
 import com.team1160.feathersMcGraw.input.inputStates.ArmStick;
 import com.team1160.feathersMcGraw.input.inputStates.DriveStick;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 
 /*
@@ -46,10 +48,17 @@ public class InputManager {
 	private static InputManager _INSTANCE;
 	
 	private InputState currentInputState;
+	private SensorState currentSensorState;
 	
 	private Joystick js1;
 	private Joystick js2;
 	private Joystick js3;
+	
+	private Gyro gyro;
+	
+	private AnalogChannel middle;
+	private AnalogChannel right;
+	private AnalogChannel left;
 	
 	public static InputManager getInstance(){
 		if(_INSTANCE == null){
@@ -60,6 +69,13 @@ public class InputManager {
 	
 	private InputManager(){
 		currentInputState = new InputState();
+		currentSensorState = new SensorState();
+		
+		gyro = new Gyro(Constants.GYRO_CHAN);
+		middle = new AnalogChannel(Constants.TOP_PULLEY_CHAN);
+		right = new AnalogChannel(Constants.RIGHT_PULLEY_CHAN);
+		left = new AnalogChannel(Constants.LEFT_PULLEY_CHAN);
+		
 		js1 = new Joystick(1);
 		js2 = new Joystick(2);
 		js3 = new Joystick(3);
@@ -87,7 +103,20 @@ public class InputManager {
                                      driveStick.setArmRelease(js.getRawButton(6));                  
                    }
 
+	private void forgeSensorState(SensorState ss){
+		ss.robotAngle = gyro.getAngle();
+		ss.tapeLengthLeft = tapeLength(left);
+		ss.tapeLengthRight = tapeLength(right);
+		ss.tapeLengthTop = tapeLength(middle);
+	}
+	
+	private double tapeLength(AnalogChannel sensor){   // A helper function to compute the length of the tape based on a pots vale
+		return 0.0; // Curently bs... TODO put real function in here...
+	}
 	public String toString(){
-		return currentInputState.toString();
+		String output = "";
+		output+= currentInputState;
+		output+= currentSensorState;
+		return output;
 	}
 }

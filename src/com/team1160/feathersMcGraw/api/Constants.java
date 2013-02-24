@@ -111,4 +111,6 @@ public interface Constants {
 				int RIGHT_PULLEY_CHAN = 3;
 				double RIGHT_PULLEY_MIN = 0;
 				double RIGHT_PULLEY_MAX = 100;
+		//Gyro
+				int GYRO_CHAN = 4;   // Made up for now... TODO make sure these channels match
 }		

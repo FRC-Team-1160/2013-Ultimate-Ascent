@@ -18,7 +18,7 @@ public class SensorState {
     public double tapeLengthLeft;
     public double tapeLengthTop;
     public double robotAngle;
-
+    
     public String toString(){
         String output = "";
         output+= "----Sensor States\n";
