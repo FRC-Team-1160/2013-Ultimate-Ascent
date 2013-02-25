@@ -53,32 +53,25 @@ public class TeleopManager {
 	private TeleopManager() {
 		currentCommand = new RobotCommand();
 		inputState = new InputState();
-	
-                                      k2 = 30;
-                                      k3 = 12.2;
-                                      
-                
+		k2 = 30;
+		k3 = 12.2;
 		driveToggle = new boolean[]{true,true};        
-	                  pulleyToggle = new boolean[]{false, true};
-                                     armToggle = new boolean[]{false,true};
-                                     gripToggle = new boolean[]{false, true};           
-                                     topPulleyToggle = new boolean[]{false,true};
-		
-                                     rightPulleyToggle = new boolean[]{false,true};
+	    pulleyToggle = new boolean[]{false, true};
+	    armToggle = new boolean[]{false,true};
+	    gripToggle = new boolean[]{false, true};           
+	    topPulleyToggle = new boolean[]{false,true};
 		rightLockToggle = new boolean[]{false,true};
-                                     
-                                     leftPulleyToggle = new boolean[]{false,true};
+		leftPulleyToggle = new boolean[]{false,true};
 		leftLockToggle = new boolean[]{false,true};     //We start of unlocked 
-		
-                                     autoClimbToggle = new boolean[]{false, true};
+		autoClimbToggle = new boolean[]{false, true};
                   }
 	
 	public RobotCommand getCommand(InputState inputState){
 		this.inputState = inputState;
 		findStates();                                                    // Seeing as the drivers stick can be in three states we need to logic that shi-
-                                     forgeArmCommand();
-                                     forgeDriveCommand();
-                                     forgePulleySystemCommand();
+		forgeArmCommand();
+		forgeDriveCommand();
+		forgePulleySystemCommand();
 		return currentCommand;
 	}
         
@@ -133,8 +126,15 @@ public class TeleopManager {
 		}
 	}
 	
-                  private void forgeAutoPulleySystemCommand(double t, double alpha, boolean top){
-                  
+                  private void forgeAutoPulleySystemCommand(boolean floor){
+                	  currentCommand.pulleySystemCommand.left.velocity = inputState.rightArmStick.y;
+                	  currentCommand.pulleySystemCommand.right.velocity = inputState.leftArmStick.y;
+                	  
+                	  currentCommand.pulleySystemCommand.top.velocity = inputState.driveStick.y;
+                	  
+                	  currentCommand.pulleySystemCommand.left.angle = getServoAngle(getTapeAngle(floor, false, inputState.sensorState.robotAngle,inputState.sensorState.tapeLengthLeft), inputState.sensorState.tapeLengthLeft, false);
+                	  currentCommand.pulleySystemCommand.right.angle = getServoAngle(getTapeAngle(floor, false, inputState.sensorState.robotAngle,inputState.sensorState.tapeLengthRight), inputState.sensorState.tapeLengthRight, false);
+                	  currentCommand.pulleySystemCommand.top.angle = getServoAngle(getTapeAngle(floor, true, inputState.sensorState.robotAngle, inputState.sensorState.tapeLengthTop), inputState.sensorState.tapeLengthTop, true);
                   }
                   
                   private double getTapeAngle(boolean floor, boolean middle, double frameAngle, double T){ 
@@ -195,22 +195,26 @@ public class TeleopManager {
                   }
                   
                   private void forgePulleySystemCommand(){
-                  
+                	  if(autoClimbToggle[0]){
+                		  forgeAutoPulleySystemCommand(true);
+                	  }else{
+                		 forgeTeleopPulleySystemCommand();
+                	  }
                   }
         
 	private void forgeTeleopPulleySystemCommand(){ 
-                                     if(!driveToggle[0] && !armToggle[0]){
+		if(!driveToggle[0] && !armToggle[0]){
 			topPulleyToggle = toggle(topPulleyToggle, inputState.driveStick.pulleyRelease);
 			currentCommand.pulleySystemCommand.top = forgePulleyCommand(topPulleyToggle[0], false, inputState.driveStick.y);  // Sets the output... currently there is no lock on the top one so it is just set to false to make the program work.... TODO if lock gets added fix this shit
 		}else{
 			currentCommand.pulleySystemCommand.top.velocity = 0; // Stop the pulley from extending if we are not in drive mode;
 		}
-		rightPulleyToggle = toggle(rightPulleyToggle, inputState.armStickTwo.released);
-		leftPulleyToggle = toggle(leftPulleyToggle, inputState.armStickOne.released);
-		rightLockToggle = toggle(rightLockToggle, inputState.armStickTwo.lockRelease);
-		leftLockToggle = toggle(leftLockToggle, inputState.armStickOne.lockRelease);
-		currentCommand.pulleySystemCommand.left = forgePulleyCommand(leftPulleyToggle[0], leftLockToggle[0], inputState.armStickOne.y);
-                                      currentCommand.pulleySystemCommand.right = forgePulleyCommand(rightPulleyToggle[0], rightLockToggle[0], inputState.armStickTwo.y);
+		rightPulleyToggle = toggle(rightPulleyToggle, inputState.leftArmStick.pulleyRelease);
+		leftPulleyToggle = toggle(leftPulleyToggle, inputState.rightArmStick.pulleyRelease);
+		rightLockToggle = toggle(rightLockToggle, inputState.leftArmStick.lockRelease);
+		leftLockToggle = toggle(leftLockToggle, inputState.rightArmStick.lockRelease);
+		currentCommand.pulleySystemCommand.left = forgePulleyCommand(leftPulleyToggle[0], leftLockToggle[0], inputState.rightArmStick.y);
+                                      currentCommand.pulleySystemCommand.right = forgePulleyCommand(rightPulleyToggle[0], rightLockToggle[0], inputState.leftArmStick.y);
         }
 	
 	private PulleyCommand forgePulleyCommand(boolean pulleyMode, boolean lock, double y){
@@ -249,7 +253,7 @@ public class TeleopManager {
                   }
         
         
-                  public String toString(){
+	public String toString(){
 		String output = "";
 		output+= currentCommand;
 		return output;

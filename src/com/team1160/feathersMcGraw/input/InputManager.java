@@ -82,8 +82,8 @@ public class InputManager {
 	}
 		
 	public InputState getInputState(){
-		forgeArmJoystick(js2, currentInputState.armStickOne);
-		forgeArmJoystick(js3, currentInputState.armStickTwo);
+		forgeArmJoystick(js2, currentInputState.rightArmStick);
+		forgeArmJoystick(js3, currentInputState.leftArmStick);
 		forgeDriveJoystick(js1, currentInputState.driveStick);
 		return currentInputState;
 	}
@@ -91,7 +91,7 @@ public class InputManager {
 	private void forgeArmJoystick(Joystick js, ArmStick armStick){
 		armStick.x = js.getX();
 		armStick.y = js.getY();
-		armStick.setLockStatus(js.getRawButton(2));
+		armStick.setLockRelease(js.getRawButton(2));
 		armStick.setReleaseStatus(js.getRawButton(1));
 	}
 	

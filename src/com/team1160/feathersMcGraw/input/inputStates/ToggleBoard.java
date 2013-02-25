@@ -4,10 +4,12 @@
  */
 package com.team1160.feathersMcGraw.input.inputStates;
 
+import com.team1160.feathersMcGraw.input.InputState;
+
 /**
  * Basically my toggle code got really messy
  * so this represents all of our toggle real 
- * or other wise
+ * or other w	ise
  * 
  * @author Wallace
  */
@@ -22,9 +24,11 @@ public class ToggleBoard {
     private boolean[] gripToggle;
     private boolean[] cookerArmToggle;
     private boolean[] pulleyToggle;
-    private boolean[] autoClimbToggle;
     private boolean[] hutchArmToggle;
-    
+
+    private boolean[] leftAutoClimbToggle;
+    private boolean[] rightAutoClimbToggle;
+    private boolean[] topAutoClimbToggle;
     public ToggleBoard(){
     	driveToggle = new boolean[]{true,true};        
         pulleyToggle = new boolean[]{false, true};
@@ -39,11 +43,68 @@ public class ToggleBoard {
         leftPulleyToggle = new boolean[]{false,true};
         leftLockToggle = new boolean[]{false,true};     //We start of unlocked 
         
-        autoClimbToggle = new boolean[]{false, true};
+        leftAutoClimbToggle = new boolean[]{false, true};
+        rightAutoClimbToggle = new boolean[]{false, true};
+        topAutoClimbToggle = new boolean[]{false, true};
     }
 	
-    public void toggleTheThings(){    // Will be the magic toggle function TODO fix this functions
+    public void toggleTheThings(InputState is){    // Will be the magic toggle function TODO fix this functions
+    	findMode(is);
+    	if(pulleyToggle[0]){
+    		topPulleyToggle = toggle(topPulleyToggle, is.driveStick.pulleyRelease);
+    		topAutoClimbToggle = toggle(topAutoClimbToggle, is.driveStick.autoClimbRelease);
+    	}else if(hutchArmToggle[0]){
+    		gripToggle = toggle(gripToggle, is.driveStick.gripRelease);
+    	}else{
+    		topAutoClimbToggle[0] = false;
+    	}
+    	leftAutoClimbToggle = toggle(leftAutoClimbToggle, is.leftArmStick.autoClimbRelease);
+    	rightAutoClimbToggle = toggle(rightAutoClimbToggle, is.rightArmStick.autoClimbRelease);
     	
+    	if(leftAutoClimbToggle[0]){
+    		leftPulleyToggle[0] = true;
+    	}else{
+    		leftPulleyToggle = toggle(leftPulleyToggle, is.leftArmStick.pulleyRelease);
+    	}
+    	
+    	if(rightAutoClimbToggle[0]){
+    		rightPulleyToggle[0] = true;
+    	}else{
+    		rightPulleyToggle = toggle(rightPulleyToggle,is.rightArmStick.pulleyRelease);
+    	}
+    }
+    
+    public void findMode(InputState is){
+        
+    	if(driveToggle[0]){
+    		pulleyToggle = toggle(pulleyToggle, is.driveStick.climbReleased);
+    		cookerArmToggle = toggle(cookerArmToggle, is.driveStick.armRelease);
+    		if(pulleyToggle[0]){
+    			driveToggle[0] = false;
+    			cookerArmToggle[0] = false;
+    		}else if(cookerArmToggle[0]){
+    			driveToggle[0] = false;
+    		}
+    	}else if(pulleyToggle[0]){
+    		driveToggle = toggle(pulleyToggle,is.driveStick.climbReleased);
+    		cookerArmToggle = toggle(cookerArmToggle,is.driveStick.armRelease);
+    		if(driveToggle[0]){
+    			pulleyToggle[0] = false;
+    			cookerArmToggle[0] = false;
+    		}else if(cookerArmToggle[0]){
+    			pulleyToggle[0] = false;
+    		}
+    	}else if(cookerArmToggle[0]){
+    		driveToggle = toggle(driveToggle,is.driveStick.driveReleased);
+    		pulleyToggle = toggle(pulleyToggle,is.driveStick.climbReleased);
+    		if(driveToggle[0]){
+        	cookerArmToggle[0] = false;
+        	pulleyToggle[0] = false;
+    		}else if(cookerArmToggle[0]){
+    			pulleyToggle[0] = false;
+    		}
+    	}
+   
     }
 	
 	protected boolean[] toggle(boolean[] toggle, boolean input){  // in the toggle array you have two values

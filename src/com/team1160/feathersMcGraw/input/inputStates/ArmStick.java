@@ -13,7 +13,8 @@ package com.team1160.feathersMcGraw.input.inputStates;
 
 public class ArmStick {
 
-	public boolean released;       // This booleans turn our buttons on the js
+	public boolean autoClimbRelease;
+	public boolean pulleyRelease;       // This booleans turn our buttons on the js
 	public boolean lockRelease;    // into toggle buttons. These are used later
 	                               // to gauge what state this js is in and
 	                               // wether or not to engag the locks
@@ -27,31 +28,35 @@ public class ArmStick {
 		this.name = name;          // and assigns the name
 		x = 0;
 		y = 0;
-		released = true;
+		pulleyRelease = true;
 		lockRelease = true;
 	}
 
 	public void setReleaseStatus(boolean button){    // Used to make later code look nicer
-		if(button && released){                      // basically toggles the toggle
-			released = false;
-		}else if(!button && !released){
-			released = true;
-		}
+		pulleyRelease = setRelease(pulleyRelease, button);
 	}
 	
-	public void setLockStatus(boolean button){       // same as above ^^^^^^^^
-		if(button && lockRelease){
-			lockRelease = false;
-		}else if(!button && !lockRelease){
-			lockRelease = false;
-		}
+	public void setLockRelease(boolean button){       
+		lockRelease = setRelease(lockRelease, button);
 	}
 	
+	public void setAutoClimbRelease(boolean button){
+		autoClimbRelease = setRelease(autoClimbRelease, button);
+	}
 	
+    protected boolean setRelease(boolean check, boolean button){
+   		if(button && check){
+   			return false;
+        }else if(!button && !check){
+             return 	true;
+        }	
+        return check;
+    }    	
+   
 	public String toString(){                               // used for debug but basically is all the
 		String output="";                                   // data for text output
 		output+="--Arm Stick " + name + "\n";
-		output+="Pulley Released: " + released + "\n";
+		output+="Pulley Released: " + pulleyRelease + "\n";
 		output+="Lock Released:   " + lockRelease + "\n";
 		output+="X:               " + x + "\n";
 		output+="Y:               " + y + "\n";
