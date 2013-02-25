@@ -15,20 +15,22 @@ import com.team1160.feathersMcGraw.input.InputState;
  */
 public class ToggleBoard {
 
-	private boolean[] driveToggle;               
-	private boolean[] topPulleyToggle;           
-	private boolean[] rightPulleyToggle;         
-	private boolean[] leftPulleyToggle;          
-	private boolean[] rightLockToggle;         
-	private boolean[] leftLockToggle;            
-    private boolean[] gripToggle;
-    private boolean[] cookerArmToggle;
-    private boolean[] pulleyToggle;
-    private boolean[] hutchArmToggle;
+	public boolean[] driveToggle;               
+	public boolean[] topPulleyToggle;           
+	public boolean[] rightPulleyToggle;         
+	public boolean[] leftPulleyToggle;          
+	public boolean[] rightLockToggle;         
+	public boolean[] leftLockToggle;            
+    public boolean[] gripToggle;
+    public boolean[] cookerArmToggle;
+    public boolean[] pulleyToggle;
+    public boolean[] hutchArmToggle;
 
-    private boolean[] leftAutoClimbToggle;
-    private boolean[] rightAutoClimbToggle;
-    private boolean[] topAutoClimbToggle;
+    public boolean[] leftAutoClimbToggle;
+    public boolean[] rightAutoClimbToggle;
+    public boolean[] topAutoClimbToggle;
+    
+    public boolean[] floorToggle;
     public ToggleBoard(){
     	driveToggle = new boolean[]{true,true};        
         pulleyToggle = new boolean[]{false, true};
@@ -41,14 +43,16 @@ public class ToggleBoard {
         rightLockToggle = new boolean[]{false,true};
         
         leftPulleyToggle = new boolean[]{false,true};
-        leftLockToggle = new boolean[]{false,true};     //We start of unlocked 
+        leftLockToggle = new boolean[]{false,true};  
         
         leftAutoClimbToggle = new boolean[]{false, true};
         rightAutoClimbToggle = new boolean[]{false, true};
         topAutoClimbToggle = new boolean[]{false, true};
+        
+        floorToggle = new boolean[]{false, true};
     }
 	
-    public void toggleTheThings(InputState is){    // Will be the magic toggle function TODO fix this functions
+    public void toggleTheThings(InputState is){   
     	findMode(is);
     	if(pulleyToggle[0]){
     		topPulleyToggle = toggle(topPulleyToggle, is.driveStick.pulleyRelease);

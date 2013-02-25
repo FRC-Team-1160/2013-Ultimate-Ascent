@@ -14,7 +14,8 @@ public class DriveStick {
 	public boolean armRelease;
 	public boolean autoClimbRelease;
     public boolean gripRelease;    
-        
+    public boolean floorRelease;    
+    
 	public double x;
 	public double y;
 	
@@ -50,6 +51,9 @@ public class DriveStick {
 		gripRelease = setRelease(gripRelease, button);
 	}
 	
+	public void setFloorRelease(boolean button){
+		floorRelease = setRelease(floorRelease, button);
+	}
 	
     protected boolean setRelease(boolean check, boolean button){
    		if(button && check){
