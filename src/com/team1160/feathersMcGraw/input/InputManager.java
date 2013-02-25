@@ -48,7 +48,6 @@ public class InputManager {
 	private static InputManager _INSTANCE;
 	
 	private InputState currentInputState;
-	private SensorState currentSensorState;
 	
 	private Joystick js1;
 	private Joystick js2;
@@ -69,7 +68,6 @@ public class InputManager {
 	
 	private InputManager(){
 		currentInputState = new InputState();
-		currentSensorState = new SensorState();
 		
 		gyro = new Gyro(Constants.GYRO_CHAN);
 		middle = new AnalogChannel(Constants.TOP_PULLEY_CHAN);
@@ -85,6 +83,8 @@ public class InputManager {
 		forgeArmJoystick(js2, currentInputState.rightArmStick);
 		forgeArmJoystick(js3, currentInputState.leftArmStick);
 		forgeDriveJoystick(js1, currentInputState.driveStick);
+		forgeSensorState(currentInputState.sensorState);
+		currentInputState.toggleBoard.toggleTheThings(currentInputState);	
 		return currentInputState;
 	}
 	
@@ -92,16 +92,20 @@ public class InputManager {
 		armStick.x = js.getX();
 		armStick.y = js.getY();
 		armStick.setLockRelease(js.getRawButton(2));
-		armStick.setReleaseStatus(js.getRawButton(1));
+		armStick.setAutoClimbRelease(js.getRawButton(3));
+		armStick.setPulleyRelease(js.getRawButton(1));
 	}
 	
 	private void forgeDriveJoystick(Joystick js, DriveStick driveStick){
 		driveStick.x = js.getX();
 		driveStick.y = js.getY();
-		driveStick.setClimbRelease(js.getRawButton(10));
+		driveStick.setClimbRelease(js.getRawButton(11));
 		driveStick.setPulleyRelease(js.getRawButton(1));
-                                     driveStick.setArmRelease(js.getRawButton(6));                  
-                   }
+		driveStick.setArmRelease(js.getRawButton(6));                  
+		driveStick.setAutoClimbRelease(js.getRawButton(3));
+		driveStick.setDriveRelease(js.getRawButton(4));
+		driveStick.setGripRelease(js.getRawButton(5));
+	}
 
 	private void forgeSensorState(SensorState ss){
 		ss.robotAngle = gyro.getAngle();
@@ -116,7 +120,6 @@ public class InputManager {
 	public String toString(){
 		String output = "";
 		output+= currentInputState;
-		output+= currentSensorState;
 		return output;
 	}
 }

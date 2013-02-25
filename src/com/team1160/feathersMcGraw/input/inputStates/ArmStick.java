@@ -32,7 +32,7 @@ public class ArmStick {
 		lockRelease = true;
 	}
 
-	public void setReleaseStatus(boolean button){    // Used to make later code look nicer
+	public void setPulleyRelease(boolean button){  
 		pulleyRelease = setRelease(pulleyRelease, button);
 	}
 	
