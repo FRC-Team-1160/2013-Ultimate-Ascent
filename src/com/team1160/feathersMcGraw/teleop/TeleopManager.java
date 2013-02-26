@@ -5,6 +5,7 @@ import com.team1160.feathersMcGraw.commands.PulleyCommand;
 import com.team1160.feathersMcGraw.commands.RobotCommand;
 import com.team1160.feathersMcGraw.input.InputState;
 import java.lang.Math;
+import com.sun.squawk.util.MathUtils;
 
 public class TeleopManager {
 /*
@@ -16,7 +17,12 @@ public class TeleopManager {
 	private RobotCommand currentCommand;
 	private InputState inputState;
 	
-            
+    /*
+     * These are all the variables needed
+     * to do the math to compute auto climb
+     * I am trying to come up with a way to clean them up
+     */
+	
 	protected double k1;
 	protected double k2;
 	protected double k3;
@@ -50,9 +56,7 @@ public class TeleopManager {
 		forgePulleySystemCommand();
 		return currentCommand;
 	}
-        
-	
-		
+    	
 	private void forgeDriveCommand(){
 		if(inputState.toggleBoard.driveToggle[0]){
 			currentCommand.drivetrainCommand.left = inputState.driveStick.x + inputState.driveStick.y;
@@ -67,14 +71,14 @@ public class TeleopManager {
 		double rFrameAngle = Math.toRadians(frameAngle);
 		if(floor){
 			if(middle){
-                    		  return 0;   //TODO might need to put not 0
+				return 0;   //TODO might need to put not 0
 			}else if(T < 11.1){    // The break free condition
 				return 90-frameAngle;  
 			}else{                //If you havent broken free
 				if(frameAngle <= 20){
-					return Math.toDegrees(Math.asin((k2-12.3*Math.sin(rFrameAngle))/T));  // Rear wheel touching
+					return Math.toDegrees(MathUtils.asin((k2-12.3*Math.sin(rFrameAngle))/T));  // Rear wheel touching
 				}else{
-					return Math.toDegrees(Math.asin((k2-18.9*Math.sin(rFrameAngle))/T));  // rear bumper
+					return Math.toDegrees(MathUtils.asin((k2-18.9*Math.sin(rFrameAngle))/T));  // rear bumper
 				}	
 			}
 		}else{   // Between rungs... not floor
@@ -90,34 +94,35 @@ public class TeleopManager {
 				k1 = 1.25;                    		  
 			}
 			if(frameAngle == 90){
-				m2 = Math.acos((k3+k1)/T);
+				m2 = MathUtils.acos((k3+k1)/T);
 			}else if(frameAngle ==0){
-				if(T<=Math.sqrt(Math.pow(k2-k1, 2) + Math.pow(k3+k1, 2))){
-					m2 = Math.asin((k2-k1)/T);
+				if(T<=Math.sqrt(MathUtils.pow(k2-k1, 2) + MathUtils.pow(k3+k1, 2))){
+					m2 = MathUtils.asin((k2-k1)/T);
 				}else{
-                    			  m2 = Math.acos((k3+k1)/T);
+                    			  m2 = MathUtils.acos((k3+k1)/T);
 				}
 			}else{    //Ugly quad stuff no need to do unless not 90 or 0 (frame angle)
 				k5 = 1/Math.tan(rFrameAngle);
-				a = (1+Math.pow(k5, 2));
+				a = (1+MathUtils.pow(k5, 2));
 				k4 = k1/Math.sin(rFrameAngle);
 				b = -2*(k2 + k4*k5 + k3*k5);
-				c = Math.pow(k2, 2)+Math.pow(k3, 2)+Math.pow(k4, 2)+2*(k3*k4) - Math.pow(T,2);
-				x2 = (-b-Math.sqrt((Math.pow(b,2)-4*a*c)))/2*a;
-				m2= Math.atan((k2-x2)/(k3+k4-k5*x2));
+				c = MathUtils.pow(k2, 2)+MathUtils.pow(k3, 2)+MathUtils.pow(k4, 2)+2*(k3*k4) - MathUtils.pow(T,2);
+				x2 = (-b-Math.sqrt((MathUtils.pow(b,2)-4*a*c)))/2*a;
+				m2= MathUtils.atan((k2-x2)/(k3+k4-k5*x2));
 			}
 			return Math.toDegrees(m2)-frameAngle;
 		}
                       
 	}
-                  
+	              
 	private double getServoAngle(double tapeAngle, double T, boolean middle){
 		double rTapeAngle = Math.toRadians(tapeAngle);
 		if(middle){
-			return 40-Math.toDegrees(Math.atan((4.5-T*Math.sin(rTapeAngle)/T*Math.cos(rTapeAngle))+1.52*T));
+			return 40-Math.toDegrees(MathUtils.atan((4.5-T*Math.sin(rTapeAngle)/T*Math.cos(rTapeAngle))+1.52*T));
 		}else{
-			return 59-Math.toDegrees(Math.atan((4.6-T*Math.sin(rTapeAngle)/(3+T*Math.cos(rTapeAngle)))+1.94*T));
+			return 59-Math.toDegrees(MathUtils.atan((4.6-T*Math.sin(rTapeAngle)/(3+T*Math.cos(rTapeAngle)))+1.94*T));
 		}
+		
 	}
 	
 	private void forgePulleySystemCommand(){
@@ -126,6 +131,19 @@ public class TeleopManager {
 		if(inputState.toggleBoard.pulleyToggle[0]){
 			currentCommand.pulleySystemCommand.top = forgePulleyCommand(inputState.toggleBoard.topPulleyToggle[0], false, inputState.driveStick.y, inputState.toggleBoard.topAutoClimbToggle[0],true, inputState.sensorState.tapeLengthTop);
 		}
+		
+		currentCommand.pulleySystemCommand.left.angle = checkRange(Constants.P_LEFT_MAX, Constants.P_LEFT_MIN, currentCommand.pulleySystemCommand.left.angle);
+		currentCommand.pulleySystemCommand.right.angle = checkRange(Constants.P_RIGHT_MAX, Constants.P_RIGHT_MIN, currentCommand.pulleySystemCommand.right.angle);
+		currentCommand.pulleySystemCommand.top.angle = checkRange(Constants.P_TOP_MAX, Constants.P_TOP_MIN, currentCommand.pulleySystemCommand.top.angle);
+	}
+	
+	private double checkRange(double max, double min, double test){
+		if(test > max){
+			return max;
+		}else if(test < min){
+			return min;
+		}
+		return test;
 	}
         
 	
@@ -149,10 +167,22 @@ public class TeleopManager {
 	}
         
 	private void forgeArmCommand(){
-		if(inputState.toggleBoard.cookerArmToggle[0]){
-			currentCommand.armCommand.angle = (inputState.driveStick.y+1)/2;
+		if(inputState.toggleBoard.hutchArmToggle[0]){
+			 if(inputState.driveStick.y < -.5){
+				 currentCommand.armCommand.direction = 1;
+			 }else if(inputState.driveStick.y > .5){
+				 currentCommand.armCommand.direction = -1;
+			 }else{
+				 currentCommand.armCommand.direction = 0;
+			 }
+		}else{
+			currentCommand.armCommand.direction = 0;
 		}
-		currentCommand.armCommand.grip = inputState.toggleBoard.gripToggle[0];
+		if(inputState.toggleBoard.gripToggle[0]){
+			currentCommand.armCommand.grip = Constants.G_SERVO_GRIP;
+		}else{
+			currentCommand.armCommand.grip = Constants.G_SERVO_OPEN;
+		}
 	}
 	
         

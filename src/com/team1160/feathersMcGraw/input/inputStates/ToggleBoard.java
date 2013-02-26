@@ -55,8 +55,12 @@ public class ToggleBoard {
     public void toggleTheThings(InputState is){   
     	findMode(is);
     	if(pulleyToggle[0]){
-    		topPulleyToggle = toggle(topPulleyToggle, is.driveStick.pulleyRelease);
     		topAutoClimbToggle = toggle(topAutoClimbToggle, is.driveStick.autoClimbRelease);
+    			if(topAutoClimbToggle[0]){
+    				topPulleyToggle[0] = false;
+    			}else{
+    	    		topPulleyToggle = toggle(topPulleyToggle, is.driveStick.pulleyRelease);
+    			}
     	}else if(hutchArmToggle[0]){
     		gripToggle = toggle(gripToggle, is.driveStick.gripRelease);
     	}else{
@@ -82,30 +86,30 @@ public class ToggleBoard {
         
     	if(driveToggle[0]){
     		pulleyToggle = toggle(pulleyToggle, is.driveStick.climbReleased);
-    		cookerArmToggle = toggle(cookerArmToggle, is.driveStick.armRelease);
+    		hutchArmToggle = toggle(hutchArmToggle, is.driveStick.armRelease);
     		if(pulleyToggle[0]){
     			driveToggle[0] = false;
-    			cookerArmToggle[0] = false;
-    		}else if(cookerArmToggle[0]){
+    			hutchArmToggle[0] = false;
+    		}else if(hutchArmToggle[0]){
     			driveToggle[0] = false;
     		}
     	}else if(pulleyToggle[0]){
-    		driveToggle = toggle(pulleyToggle,is.driveStick.climbReleased);
-    		cookerArmToggle = toggle(cookerArmToggle,is.driveStick.armRelease);
+    		driveToggle = toggle(driveToggle,is.driveStick.driveReleased);
+    		hutchArmToggle = toggle(hutchArmToggle,is.driveStick.armRelease);
     		if(driveToggle[0]){
     			pulleyToggle[0] = false;
-    			cookerArmToggle[0] = false;
-    		}else if(cookerArmToggle[0]){
+    			hutchArmToggle[0] = false;
+    		}else if(hutchArmToggle[0]){
     			pulleyToggle[0] = false;
     		}
-    	}else if(cookerArmToggle[0]){
+    	}else if(hutchArmToggle[0]){
     		driveToggle = toggle(driveToggle,is.driveStick.driveReleased);
     		pulleyToggle = toggle(pulleyToggle,is.driveStick.climbReleased);
     		if(driveToggle[0]){
-        	cookerArmToggle[0] = false;
+    		hutchArmToggle[0] = false;
         	pulleyToggle[0] = false;
-    		}else if(cookerArmToggle[0]){
-    			pulleyToggle[0] = false;
+    		}else if(pulleyToggle[0]){
+    			hutchArmToggle[0] = false;
     		}
     	}
    
@@ -123,5 +127,26 @@ public class ToggleBoard {
 			toggle[1] = true;
 			}	
 			return toggle;
+	}
+
+	public String toString(){
+		String output = "";
+		output += "/---- Toggle States\n";
+		output += "Hutch's Mode: \n";
+		output += "    Drive: " + driveToggle[0] + "\n";
+		output += "    Pulley: " + pulleyToggle[0] + "\n";
+		output += "          Angle: " + !topPulleyToggle[0] + "\n";
+		output += "          Velocity: " + topPulleyToggle[0] + "\n";
+		output += "    Arm: " + hutchArmToggle[0] + "\n";
+		output += "          Grip: " + gripToggle[0] + "\n";
+		output += "Cooker 1 mode:\n";
+		output += "Angle: " + !leftPulleyToggle[0] + "\n";
+		output += "Velocity: " + leftPulleyToggle[0] + "\n";
+		output += "Lock: " + leftLockToggle[0] + "\n";
+		output += "Cooker 2 mode:\n";
+		output += "Angle: " + !rightPulleyToggle[0] + "\n";
+		output += "Velocity: "+ rightPulleyToggle[0] + "\n";
+		output += "Lock: " + rightLockToggle[0] + "\n";
+		return output;
 	}
 }

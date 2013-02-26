@@ -99,7 +99,7 @@ public class InputManager {
 	private void forgeDriveJoystick(Joystick js, DriveStick driveStick){
 		driveStick.x = js.getX();
 		driveStick.y = js.getY();
-		driveStick.setClimbRelease(js.getRawButton(11));
+		driveStick.setClimbRelease(js.getRawButton(10));
 		driveStick.setPulleyRelease(js.getRawButton(1));
 		driveStick.setArmRelease(js.getRawButton(6));                  
 		driveStick.setAutoClimbRelease(js.getRawButton(3));

@@ -33,7 +33,7 @@ public class DriveTrain implements ModelNotifier {
         right = new Jaguar(Constants.DT_RIGHT_JAG_CAR, Constants.DT_RIGHT_JAG_CHAN);
     }
     
-    public DriveTrain getInstance(){
+    public static DriveTrain getInstance(){
         if(_INSTANCE == null){
             _INSTANCE = new DriveTrain();
         }

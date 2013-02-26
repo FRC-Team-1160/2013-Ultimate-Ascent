@@ -26,6 +26,7 @@ public class InputState {
 		output+= rightArmStick;
 		output+= leftArmStick;
 		output+= sensorState;
+		output+= toggleBoard;
 		return output;
 	}
 	

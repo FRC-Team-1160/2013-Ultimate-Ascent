@@ -13,7 +13,7 @@ package com.team1160.feathersMcGraw.commands;
 public class PulleyCommand {
 	public double velocity;                 // The speed at which to extend
 	public double length;                   // Length of pulley (no code uses this yet)
-	public boolean locked;                  // If the ratchet should lock
+	public boolean locked;                  // If the ratchet should lock... will change how this works...
 	public double angle;                    // Angle of servo, it was protected for good reason
 	public double home;
                   
@@ -23,14 +23,7 @@ public class PulleyCommand {
 		length = 1337;
 	}
 	
-                   public void setHome(double newHome){
-                        this.home = newHome;
-                   }
-                   
-                   public void home(){
-                       this.angle = home;
-                   }                    
-	
+		
 	public String toString(){
 		String output = "";
 		output += "Velocity: " + velocity + "\n";
