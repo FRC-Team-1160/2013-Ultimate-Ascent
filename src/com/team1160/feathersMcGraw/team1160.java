@@ -54,11 +54,16 @@ public class team1160 extends IterativeRobot {
         public void teleopInit(){
         }
         
-        public void teleopPeriodic(){
-            is = im.getInputState();
-            cmd = tm.getCommand(is);
-            om.setOutput(cmd);
-            if(System.currentTimeMillis() - lastPrintTime > 5000){
+        public void teleopPeriodic(){   
+            // This is the main loop the overall function of our robot in three lines
+        	is = im.getInputState();      // An input state is created by the input manager
+            cmd = tm.getCommand(is);      // This is then fed to the teleop manager to create a robot command
+            om.setOutput(cmd);            // This is then set to be output
+            
+            // This displays our data on the console for debugging / calibration purposes
+            // Thinking about changing it to smart dashboard but more for a later time
+            
+            if(System.currentTimeMillis() - lastPrintTime > 5000){  
                 Printer.print();
                 lastPrintTime = System.currentTimeMillis();
             }

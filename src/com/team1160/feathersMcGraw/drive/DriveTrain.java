@@ -41,8 +41,8 @@ public class DriveTrain implements ModelNotifier {
     }
     
     public void setDriveTrain(DrivetrainCommand command){
-        left.set(command.left);
-        left.set(command.right);
+        left.set(-command.left);
+        right.set(-command.right);
     }
     
     public void resetDriveTrain(){
