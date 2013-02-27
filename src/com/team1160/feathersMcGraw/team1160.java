@@ -39,18 +39,18 @@ public class team1160 extends IterativeRobot {
     
     DriveTrain dt;
 
-    AnalogChannel test = new AnalogChannel(4);
+//    AnalogChannel test = new AnalogChannel(4);
     
     long lastPrintTime;
 	
         public void robotInit(){
-//        	System.out.println("In robo init good luck...");
-//        	im = InputManager.getInstance();
-//            tm = TeleopManager.getInstance();
-//            om= OutputManager.getInstance();
-//            is = new InputState();
-//            cmd = new RobotCommand();
-//            lastPrintTime = System.currentTimeMillis();
+        	System.out.println("In robo init good luck...");
+        	im = InputManager.getInstance();
+            tm = TeleopManager.getInstance();
+            om= OutputManager.getInstance();
+            is = new InputState();
+            cmd = new RobotCommand();
+            lastPrintTime = System.currentTimeMillis();
         }
         
         public void teleopInit(){
@@ -72,18 +72,20 @@ public class team1160 extends IterativeRobot {
         }
         
 	public void autonomousInit(){
-		lastPrintTime = System.currentTimeMillis();
+//		lastPrintTime = System.currentTimeMillis();
         }
 	public void autonomousPeriodic(){
-		double v = test.getVoltage();
-		double x = (.84*v*v)+(14.91*v)-11.187+4.5;
-		if(System.currentTimeMillis() - lastPrintTime > 3000){
-			System.out.println("Length");
-			System.out.println(x + " Inches");
-			System.out.println("Pot");
-			System.out.println(v + " Volts");
-			lastPrintTime = System.currentTimeMillis();
-		}
+//		double v = test.getVoltage();
+		//double x = (-.4984*v*v)+(19.36*v)-10.88+4.5;
+//		double x = (-.6296*v*v)-(12.2*v)+69.62+4.5;
+//		double x = (.077*v*v) + (15.54*v) + 4.72 + 4.5;
+//		if(System.currentTimeMillis() - lastPrintTime > 3000){
+//			System.out.println("Length");
+//			System.out.println(x + " Inches");
+//			System.out.println("Pot");
+//			System.out.println(v + " Volts");
+//			lastPrintTime = System.currentTimeMillis();
+//		}
 	}
 	
 	public void testInit(){
