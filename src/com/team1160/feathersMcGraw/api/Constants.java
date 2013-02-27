@@ -46,7 +46,7 @@ public interface Constants {
 			// Top Pulley
 				int P_TOP_JAG_CHAN = 1;
 				int P_TOP_JAG_CAR = 1;
-				int P_TOP_SERVO_CHAN = 6;
+				int P_TOP_SERVO_CHAN = 5;
 				int P_TOP_SERVO_CAR = 1;
 				int P_TOP_LOCK_CHAN = 7;       // Not actually used as of now
 				int P_TOP_LOCK_CAR = 1;          // Fix if they throw a lock on 
@@ -58,26 +58,26 @@ public interface Constants {
 			// Right Pulley
 				int P_RIGHT_JAG_CHAN = 2;
 				int P_RIGHT_JAG_CAR = 1;
-				int P_RIGHT_SERVO_CHAN = 4;
+				int P_RIGHT_SERVO_CHAN = 6;
 				int P_RIGHT_SERVO_CAR = 1;
-				int P_RIGHT_LOCK_CHAN = 5;
+				int P_RIGHT_LOCK_CHAN = 4;
 				int P_RIGHT_LOCK_CAR = 1;
-				double P_RIGHT_LOCK_LOCKED = .24;
-				double P_RIGHT_LOCK_OPEN = .36;
-				double P_RIGHT_HOME = .27;
-				double P_RIGHT_MAX = .9;
-				double P_RIGHT_MIN = .2;
+				double P_RIGHT_LOCK_LOCKED = .8;
+				double P_RIGHT_LOCK_OPEN = .49;
+				double P_RIGHT_HOME = .63;
+				double P_RIGHT_MAX = 1;
+				double P_RIGHT_MIN = .63;
 			// Left Pulley
-				int P_LEFT_JAG_CHAN = 3;
+				int P_LEFT_JAG_CHAN = 1;
 				int P_LEFT_JAG_CAR = 2;
-				int P_LEFT_SERVO_CHAN = 1;
+				int P_LEFT_SERVO_CHAN = 4;
 				int P_LEFT_SERVO_CAR = 2;
-				int P_LEFT_LOCK_CHAN = 4;
+				int P_LEFT_LOCK_CHAN = 5;
 				int P_LEFT_LOCK_CAR = 2;
-				double P_LEFT_LOCK_LOCKED = .56;
-				double P_LEFT_LOCK_OPEN = .4;
-				double P_LEFT_HOME = .56;
-				double P_LEFT_MAX =.9;
+				double P_LEFT_LOCK_LOCKED = .13;
+				double P_LEFT_LOCK_OPEN = .5;
+				double P_LEFT_HOME = .62;
+				double P_LEFT_MAX =.62;
 				double P_LEFT_MIN = .2;
 		// Arm system
 			// Arm

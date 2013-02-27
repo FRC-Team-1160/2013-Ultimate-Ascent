@@ -30,20 +30,20 @@ public class DigitalServo extends Servo {
 	
 	public void set(double set){
 		if(set == 1337){
-                                        toLastSet();
-                                    }
-                                    if(set > upperStop){
+			toLastSet();
+		}
+		if(set > upperStop){
 			set = upperStop;
 		}else if(set < lowerStop){
 			set = lowerStop;
 		}
 		lastSet = set;
-                                    super.set(set);
+		super.set(set);
 	}
 	
-                  public void toLastSet(){
-                      super.set(lastSet);
-                  }
+	public void toLastSet(){
+		super.set(lastSet);
+	}
         
 	public void free(){
 		freed = true;

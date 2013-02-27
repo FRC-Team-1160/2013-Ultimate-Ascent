@@ -8,6 +8,7 @@ import com.team1160.feathersMcGraw.input.InputState;
 import com.team1160.feathersMcGraw.output.OutputManager;
 import com.team1160.feathersMcGraw.teleop.TeleopManager;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /*
@@ -37,18 +38,19 @@ public class team1160 extends IterativeRobot {
     RobotCommand cmd;
     
     DriveTrain dt;
-       
+
+    AnalogChannel test = new AnalogChannel(4);
     
     long lastPrintTime;
 	
         public void robotInit(){
-        	System.out.println("In robo init good luck...");
-        	im = InputManager.getInstance();
-            tm = TeleopManager.getInstance();
-            om= OutputManager.getInstance();
-            is = new InputState();
-            cmd = new RobotCommand();
-            lastPrintTime = System.currentTimeMillis();
+//        	System.out.println("In robo init good luck...");
+//        	im = InputManager.getInstance();
+//            tm = TeleopManager.getInstance();
+//            om= OutputManager.getInstance();
+//            is = new InputState();
+//            cmd = new RobotCommand();
+//            lastPrintTime = System.currentTimeMillis();
         }
         
         public void teleopInit(){
@@ -70,10 +72,18 @@ public class team1160 extends IterativeRobot {
         }
         
 	public void autonomousInit(){
-        
+		lastPrintTime = System.currentTimeMillis();
         }
-	public void autoPeriodic(){
-		
+	public void autonomousPeriodic(){
+		double v = test.getVoltage();
+		double x = (.84*v*v)+(14.91*v)-11.187+4.5;
+		if(System.currentTimeMillis() - lastPrintTime > 3000){
+			System.out.println("Length");
+			System.out.println(x + " Inches");
+			System.out.println("Pot");
+			System.out.println(v + " Volts");
+			lastPrintTime = System.currentTimeMillis();
+		}
 	}
 	
 	public void testInit(){
