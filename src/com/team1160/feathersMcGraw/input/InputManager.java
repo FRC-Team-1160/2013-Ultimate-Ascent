@@ -1,7 +1,6 @@
 package com.team1160.feathersMcGraw.input;
 
 import com.team1160.feathersMcGraw.api.Constants;
-import com.team1160.feathersMcGraw.api.Printer;
 import com.team1160.feathersMcGraw.input.inputStates.ArmStick;
 import com.team1160.feathersMcGraw.input.inputStates.DriveStick;
 

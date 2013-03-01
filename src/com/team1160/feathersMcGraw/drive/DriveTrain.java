@@ -47,8 +47,8 @@ public class DriveTrain implements ModelNotifier {
     
     public void resetDriveTrain(){
         gyro.reset();
-        rightEncoder.reset();
-        leftEncoder.reset();
+//        rightEncoder.reset();
+//        leftEncoder.reset();
     }
     
     public void updateModel(Model model) {

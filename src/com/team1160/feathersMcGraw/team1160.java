@@ -8,7 +8,6 @@ import com.team1160.feathersMcGraw.input.InputState;
 import com.team1160.feathersMcGraw.output.OutputManager;
 import com.team1160.feathersMcGraw.teleop.TeleopManager;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 /*
@@ -38,9 +37,6 @@ public class team1160 extends IterativeRobot {
     RobotCommand cmd;
     
     DriveTrain dt;
-
-    
-//    AnalogChannel test = new AnalogChannel(2);
     
     long lastPrintTime;
 	
@@ -73,23 +69,9 @@ public class team1160 extends IterativeRobot {
         }
         
 	public void autonomousInit(){
-//		lastPrintTime = System.currentTimeMillis();
-        }
+	}
+
 	public void autonomousPeriodic(){
-//		double v = test.getVoltage();
-//		double x = (-.4984*v*v)+(19.36*v)-10.88+4.5;
-//		double x = (-.6296*v*v)-(12.2*v)+69.62+4.5;
-//		double x = (.077*v*v) + (15.54*v) + 4.72 + 4.5;
-//		if(System.currentTimeMillis() - lastPrintTime > 3000){
-//			System.out.println("Length");
-//			System.out.println(x + " Inches");
-//			System.out.println("Pot");
-//			System.out.println(v + " Volts");
-//			lastPrintTime = System.currentTimeMillis();
-//		}
-//		double v = test.getVoltage();
-//		System.out.println("Voltage: " + v);
-//		System.out.println("Inches" + (16.3*v - 3.19 + 4.5));
 		
 	}
 	
