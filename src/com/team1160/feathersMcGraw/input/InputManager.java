@@ -1,6 +1,7 @@
 package com.team1160.feathersMcGraw.input;
 
 import com.team1160.feathersMcGraw.api.Constants;
+import com.team1160.feathersMcGraw.api.Printer;
 import com.team1160.feathersMcGraw.input.inputStates.ArmStick;
 import com.team1160.feathersMcGraw.input.inputStates.DriveStick;
 
@@ -80,17 +81,17 @@ public class InputManager {
 	}
 		
 	public InputState getInputState(){
-		forgeArmJoystick(js2, currentInputState.rightArmStick);
-		forgeArmJoystick(js3, currentInputState.leftArmStick);
+		forgeArmJoystick(js2, currentInputState.rightArmStick, -1);
+		forgeArmJoystick(js3, currentInputState.leftArmStick, 1);
 		forgeDriveJoystick(js1, currentInputState.driveStick);
 		forgeSensorState(currentInputState.sensorState);
 		currentInputState.toggleBoard.toggleTheThings(currentInputState);	
 		return currentInputState;
 	}
 	
-	private void forgeArmJoystick(Joystick js, ArmStick armStick){
+	private void forgeArmJoystick(Joystick js, ArmStick armStick, int multiplier){
 		armStick.x = js.getX();
-		armStick.y = js.getY();
+		armStick.y = js.getY()*multiplier;
 		armStick.setLockRelease(js.getRawButton(2));
 		armStick.setAutoClimbRelease(js.getRawButton(3));
 		armStick.setPulleyRelease(js.getRawButton(1));
@@ -109,13 +110,26 @@ public class InputManager {
 
 	private void forgeSensorState(SensorState ss){
 		ss.robotAngle = gyro.getAngle();
-		ss.tapeLengthLeft = tapeLength(left);
-		ss.tapeLengthRight = tapeLength(right);
-		ss.tapeLengthTop = tapeLength(middle);
+		ss.tapeLengthLeft = tapeLength(left,3);
+		ss.tapeLengthRight = tapeLength(right,1);
+		ss.tapeLengthTop = tapeLength(middle,2);
 	}
 	
-	private double tapeLength(AnalogChannel sensor){   // A helper function to compute the length of the tape based on a pots vale
-		return 0.0; // Curently bs... TODO put real function in here...
+	private double tapeLength(AnalogChannel sensor, int side){   // A helper function to compute the length of the tape based on a pots vale
+		/*Side
+		 * 1 = right
+		 * 2 = middle
+		 * 3 = left
+		 */
+		double v = sensor.getVoltage(); // all my equations where in terms of v so faster to code
+		if(side == 1){
+			return (16.3*v - 3.19 + 4.5);
+		}else if(side == 2){
+			return (.077*v*v) + (15.54*v) + 4.72 + 4.5;
+		}else if(side == 3){
+			return (-.6296*v*v)-(12.2*v)+69.62+4.5;
+		}
+		return -10;
 	}
 	public String toString(){
 		String output = "";

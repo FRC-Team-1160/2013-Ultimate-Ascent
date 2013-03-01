@@ -1,6 +1,7 @@
 package com.team1160.feathersMcGraw.teleop;
 
 import com.team1160.feathersMcGraw.api.Constants;
+import com.team1160.feathersMcGraw.api.Printer;
 import com.team1160.feathersMcGraw.commands.PulleyCommand;
 import com.team1160.feathersMcGraw.commands.RobotCommand;
 import com.team1160.feathersMcGraw.input.InputState;
@@ -34,7 +35,15 @@ public class TeleopManager {
 	protected double x2;
 	protected double m2;
 	protected double beta;
-                   
+                  
+	protected double j1;
+	protected double j2;
+	protected double j3;
+	protected double j4;
+	protected double j5;
+	protected double j6;
+	protected double j7;
+	
 	public static TeleopManager getInstance(){
 		if(_INSTANCE == null){
 			_INSTANCE =  new TeleopManager();
@@ -45,8 +54,8 @@ public class TeleopManager {
 	private TeleopManager() {
 		currentCommand = new RobotCommand();
 		inputState = new InputState();
-		k2 = 30;
-		k3 = 12.2;
+		k2 = 30.75;
+		k3 = 12.1;
 	}
 	
 	public RobotCommand getCommand(InputState inputState){
@@ -88,48 +97,123 @@ public class TeleopManager {
 				return 90-frameAngle;
 			}
 			if(middle){
-                    		  k1 = 9.5;
+				k1 = 9.375;
 			}
 			else{
-				k1 = 1.25;                    		  
+				k1 = 1.125;                    		  
 			}
-			if(frameAngle == 90){
+			if(frameAngle < 92 && frameAngle > 88){
 				m2 = MathUtils.acos((k3+k1)/T);
-			}else if(frameAngle ==0){
+			}else if(frameAngle < 2 && frameAngle > -2 ){
 				if(T<=Math.sqrt(MathUtils.pow(k2-k1, 2) + MathUtils.pow(k3+k1, 2))){
 					m2 = MathUtils.asin((k2-k1)/T);
 				}else{
-                    			  m2 = MathUtils.acos((k3+k1)/T);
+					m2 = MathUtils.acos((k3+k1)/T);
 				}
 			}else{    //Ugly quad stuff no need to do unless not 90 or 0 (frame angle)
+				System.out.println("K1: " + k1);
+				System.out.println("K2: " + k2);
+				System.out.println("K3: " + k3);
 				k5 = 1/Math.tan(rFrameAngle);
 				a = (1+MathUtils.pow(k5, 2));
 				k4 = k1/Math.sin(rFrameAngle);
 				b = -2*(k2 + k4*k5 + k3*k5);
 				c = MathUtils.pow(k2, 2)+MathUtils.pow(k3, 2)+MathUtils.pow(k4, 2)+2*(k3*k4) - MathUtils.pow(T,2);
-				x2 = (-b-Math.sqrt((MathUtils.pow(b,2)-4*a*c)))/2*a;
+				System.out.println("T: " + T);
+				System.out.println("2*(k3*k4) = " + 2*(k3*k4));
+				x2 = (-b-Math.sqrt(((b*b)-(4*a*c))))/(2*a);
+				System.out.println("Discriminent: " + ((b*b)-(4*a*c)));
 				m2= MathUtils.atan((k2-x2)/(k3+k4-k5*x2));
+				System.out.println("k5: " + k5  );
+				System.out.println("a: " + a);
+				System.out.println("k4: " + k4);
+				System.out.println("b: " + b);
+				System.out.println("c: " + c);
+				System.out.println("x2: " + x2);
+				System.out.println("m2: " + m2);
 			}
+			Printer.send("tape angle", Math.toDegrees(m2)-frameAngle);
 			return Math.toDegrees(m2)-frameAngle;
 		}
                       
 	}
 	              
-	private double getServoAngle(double tapeAngle, double T, boolean middle){
-		double rTapeAngle = Math.toRadians(tapeAngle);
-		if(middle){
-			return 40-Math.toDegrees(MathUtils.atan((4.5-T*Math.sin(rTapeAngle)/T*Math.cos(rTapeAngle))+1.52*T));
-		}else{
-			return 59-Math.toDegrees(MathUtils.atan((4.6-T*Math.sin(rTapeAngle)/(3+T*Math.cos(rTapeAngle)))+1.94*T));
+//	private double getServoAngle(double tapeAngle, double T, boolean middle){
+//		double rTapeAngle = Math.toRadians(tapeAngle);
+//		if(middle){
+//			return 40-Math.toDegrees(MathUtils.atan((4.5-T*Math.sin(rTapeAngle)/T*Math.cos(rTapeAngle))+1.52*T));
+//		}else{
+//			return 59-Math.toDegrees(MathUtils.atan((4.6-T*Math.sin(rTapeAngle)/(3+T*Math.cos(rTapeAngle)))+1.94*T));
+//		}
+//		
+//	}
+	
+	private double getServoAngle(double tapeAngle, int side){
+		/*
+		 * 1 = right
+		 * 2 = middle
+		 * 3 = left
+		 */
+		tapeAngle = Math.toRadians(tapeAngle);
+		if(side == 1){
+			j2 = Math.sin(tapeAngle)*inputState.sensorState.tapeLengthRight-4.5;
+			j3 = Math.cos(tapeAngle)*inputState.sensorState.tapeLengthRight+2.5;
+			j4 = Math.sqrt((j2*j2)+(j3*j3));
+			j5 = 134-2.046*j4;
+			j6 = Math.toDegrees(MathUtils.atan(j2/j3));
+			j7 = j5+j6;
+			Printer.send("j2", j2);
+			Printer.send("j3", j3);
+			Printer.send("j4", j4);
+			Printer.send("j5", j5);
+			Printer.send("j6", j6);
+			Printer.send("j7", j7);
+			Printer.send("Tape Length", inputState.sensorState.tapeLengthRight);
+			Printer.send("Servo Angle: ", 1.296-.0037*j7);
+			return  1.296-.0037*j7;
+		}else if(side == 2){
+			j2 = Math.sin(tapeAngle)*inputState.sensorState.tapeLengthTop-4.5;
+			j3 = Math.cos(tapeAngle)*inputState.sensorState.tapeLengthTop;
+			j4 = Math.sqrt((j2*j2)+(j3*j3));
+			j5 = 140-1.88*j4;
+			j6 = Math.toDegrees(MathUtils.atan(j2/j3));
+			j7 = j5+j6;
+			Printer.send("j2", j2);
+			Printer.send("j3", j3);
+			Printer.send("j4", j4);
+			Printer.send("j5", j5);
+			Printer.send("j6", j6);
+			Printer.send("j7", j7);
+			Printer.send("Tape Length", inputState.sensorState.tapeLengthTop);
+			Printer.send("Servo angle", -.0033*j7+.79);
+			return  -.0033*j7+.79;
+		}else if(side == 3){
+			System.out.println(Math.toDegrees(tapeAngle));
+			j2 = Math.sin(tapeAngle)*inputState.sensorState.tapeLengthLeft-4.5;
+			j3 = Math.cos(tapeAngle)*inputState.sensorState.tapeLengthLeft+2.5;
+			j4 = Math.sqrt((j2*j2)+(j3*j3));
+			j5 = 134-2.046*j4;
+			j6 = Math.toDegrees(MathUtils.atan(j2/j3));
+			j7 = j5+j6;
+			Printer.send("j2", j2);
+			Printer.send("j3", j3);
+			Printer.send("j4", j4);
+			Printer.send("j5", j5);
+			Printer.send("j6", j6);
+			Printer.send("j7", j7);
+			Printer.send("Tape Length", inputState.sensorState.tapeLengthLeft);
+			Printer.send("Servo Angle", -.0248+.0033*j7);
+			return -.0248+.0033*j7;
 		}
 		
-	}
+		return 1337;
+	} 
 	
 	private void forgePulleySystemCommand(){
-		currentCommand.pulleySystemCommand.left = forgePulleyCommand(inputState.toggleBoard.leftPulleyToggle[0], inputState.toggleBoard.leftLockToggle[0], inputState.leftArmStick.y, inputState.toggleBoard.leftAutoClimbToggle[0], false, inputState.sensorState.tapeLengthLeft);
-		currentCommand.pulleySystemCommand.right = forgePulleyCommand(inputState.toggleBoard.rightPulleyToggle[0], inputState.toggleBoard.rightLockToggle[0], inputState.rightArmStick.y, inputState.toggleBoard.rightAutoClimbToggle[0], false, inputState.sensorState.tapeLengthRight);
+		currentCommand.pulleySystemCommand.left = forgePulleyCommand(inputState.toggleBoard.leftPulleyToggle[0], inputState.toggleBoard.leftLockToggle[0], inputState.leftArmStick.y, inputState.toggleBoard.leftAutoClimbToggle[0], 3, inputState.sensorState.tapeLengthLeft,currentCommand.pulleySystemCommand.left);
+		currentCommand.pulleySystemCommand.right = forgePulleyCommand(inputState.toggleBoard.rightPulleyToggle[0], inputState.toggleBoard.rightLockToggle[0], inputState.rightArmStick.y, inputState.toggleBoard.rightAutoClimbToggle[0], 1, inputState.sensorState.tapeLengthRight,currentCommand.pulleySystemCommand.right);
 		if(inputState.toggleBoard.pulleyToggle[0]){
-			currentCommand.pulleySystemCommand.top = forgePulleyCommand(inputState.toggleBoard.topPulleyToggle[0], false, inputState.driveStick.y, inputState.toggleBoard.topAutoClimbToggle[0],true, inputState.sensorState.tapeLengthTop);
+			currentCommand.pulleySystemCommand.top = forgePulleyCommand(inputState.toggleBoard.topPulleyToggle[0], false, inputState.driveStick.y, inputState.toggleBoard.topAutoClimbToggle[0],2, inputState.sensorState.tapeLengthTop,currentCommand.pulleySystemCommand.top);
 		}
 		
 		currentCommand.pulleySystemCommand.left.angle = checkRange(Constants.P_LEFT_MAX, Constants.P_LEFT_MIN, currentCommand.pulleySystemCommand.left.angle);
@@ -145,39 +229,31 @@ public class TeleopManager {
 		}
 		return test;
 	}
-        
-	
-	private PulleyCommand forgePulleyCommand(boolean pulleyMode, boolean lock, double y, boolean auto, boolean middle, double T){
-		PulleyCommand newCommand = new PulleyCommand();
+	private PulleyCommand forgePulleyCommand(boolean pulleyMode, boolean lock, double y, boolean auto, int side, double T, PulleyCommand command){
 		if(!auto){
 			if(!pulleyMode){
-				newCommand.angle = (y+1)/2;
-				newCommand.velocity = 0;
+				command.angle = (y+1)/2;
+				command.velocity = 0;
 			}else{
-				newCommand.velocity = -y;
-				newCommand.angle = 1337;
+				command.velocity = -y;
 			}
-			newCommand.locked = lock;
+			command.locked = lock;
 			
 		}else{
-			newCommand.angle = getServoAngle(getTapeAngle(inputState.toggleBoard.floorToggle[0], middle, inputState.sensorState.robotAngle,T), T, middle);
-			newCommand.velocity = -y;
+			command.angle = getServoAngle(getTapeAngle(inputState.toggleBoard.floorToggle[0], side==2, inputState.sensorState.robotAngle,T), side);
+			command.velocity = -y;
 		}
-		return newCommand;
+		return command;
 	}
         
 	private void forgeArmCommand(){
+		
 		if(inputState.toggleBoard.hutchArmToggle[0]){
-			 if(inputState.driveStick.y < -.5){
-				 currentCommand.armCommand.direction = 1;
-			 }else if(inputState.driveStick.y > .5){
-				 currentCommand.armCommand.direction = -1;
-			 }else{
-				 currentCommand.armCommand.direction = 0;
-			 }
+			currentCommand.armCommand.velocity = inputState.driveStick.y;
 		}else{
-			currentCommand.armCommand.direction = 0;
+			currentCommand.armCommand.velocity = 0;
 		}
+		
 		if(inputState.toggleBoard.gripToggle[0]){
 			currentCommand.armCommand.grip = Constants.G_SERVO_GRIP;
 		}else{

@@ -39,7 +39,8 @@ public class team1160 extends IterativeRobot {
     
     DriveTrain dt;
 
-//    AnalogChannel test = new AnalogChannel(4);
+    
+//    AnalogChannel test = new AnalogChannel(2);
     
     long lastPrintTime;
 	
@@ -66,7 +67,7 @@ public class team1160 extends IterativeRobot {
             // Thinking about changing it to smart dashboard but more for a later time
             
             if(System.currentTimeMillis() - lastPrintTime > 5000){  
-                Printer.print();
+            	Printer.print();
                 lastPrintTime = System.currentTimeMillis();
             }
         }
@@ -76,7 +77,7 @@ public class team1160 extends IterativeRobot {
         }
 	public void autonomousPeriodic(){
 //		double v = test.getVoltage();
-		//double x = (-.4984*v*v)+(19.36*v)-10.88+4.5;
+//		double x = (-.4984*v*v)+(19.36*v)-10.88+4.5;
 //		double x = (-.6296*v*v)-(12.2*v)+69.62+4.5;
 //		double x = (.077*v*v) + (15.54*v) + 4.72 + 4.5;
 //		if(System.currentTimeMillis() - lastPrintTime > 3000){
@@ -86,10 +87,14 @@ public class team1160 extends IterativeRobot {
 //			System.out.println(v + " Volts");
 //			lastPrintTime = System.currentTimeMillis();
 //		}
+//		double v = test.getVoltage();
+//		System.out.println("Voltage: " + v);
+//		System.out.println("Inches" + (16.3*v - 3.19 + 4.5));
+		
 	}
 	
 	public void testInit(){
-                   }
+	}
 	
 	public void testPeriodic(){
 

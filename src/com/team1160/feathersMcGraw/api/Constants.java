@@ -100,7 +100,7 @@ public interface Constants {
 				int COOKER_STICK_1 = 2;
 				int COOKER_STICK_2 = 3;
 		//Pot Constants
-				int TOP_PULLEY_CHAN = 2;
+				int TOP_PULLEY_CHAN = 4;
 				double TOP_PULLEY_MIN = 0;     //Made up for now
 				double TOP_PULLEY_MAX = 100;   // TODO TEST
 
@@ -108,7 +108,7 @@ public interface Constants {
 				double LEFT_PULLEY_MIN = 0;
 				double LEFT_PULLEY_MAX = 100;
 				
-				int RIGHT_PULLEY_CHAN = 4;
+				int RIGHT_PULLEY_CHAN = 2;
 				double RIGHT_PULLEY_MIN = 0;
 				double RIGHT_PULLEY_MAX = 100;
 		//Gyro

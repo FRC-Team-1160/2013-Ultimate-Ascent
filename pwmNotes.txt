@@ -1,1 +1,22 @@
-nvm
+Center Servo
+T = tape lenght
+j2 = sin(tapeAngle)*T-4.5
+j3 = cos(tapeAngle)*T
+j4 = sqrt(j2^2 + j3^2)
+j5 = 140-1.88*j4
+j6 = atan(j2/j3)
+j7 = j5+j6
+servo value = -.0033sj7+.79
+
+Right servo
+j2 = sin(tapeAngle)*T-4.5
+j3 = cos(tapeAngle)+T+2.5
+j4 = ""
+j5 = 134-2.046*j4
+j6 = ""
+j7 = ""
+servo value = 1.296-.0037-j7
+
+left
+j2-j7 = "" 
+servo value = -.0248+.0033*j7

@@ -69,6 +69,9 @@ public class ToggleBoard {
     	leftAutoClimbToggle = toggle(leftAutoClimbToggle, is.leftArmStick.autoClimbRelease);
     	rightAutoClimbToggle = toggle(rightAutoClimbToggle, is.rightArmStick.autoClimbRelease);
     	
+    	leftLockToggle = toggle(leftLockToggle, is.leftArmStick.lockRelease);
+    	rightLockToggle = toggle(rightLockToggle, is.rightArmStick.lockRelease);
+    	
     	if(leftAutoClimbToggle[0]){
     		leftPulleyToggle[0] = true;
     	}else{
@@ -134,6 +137,7 @@ public class ToggleBoard {
 		output += "/---- Toggle States\n";
 		output += "Hutch's Mode: \n";
 		output += "    Drive: " + driveToggle[0] + "\n";
+		output += "    Auto: " + topAutoClimbToggle[0] + "\n";
 		output += "    Pulley: " + pulleyToggle[0] + "\n";
 		output += "          Angle: " + !topPulleyToggle[0] + "\n";
 		output += "          Velocity: " + topPulleyToggle[0] + "\n";
@@ -143,9 +147,11 @@ public class ToggleBoard {
 		output += "Angle: " + !leftPulleyToggle[0] + "\n";
 		output += "Velocity: " + leftPulleyToggle[0] + "\n";
 		output += "Lock: " + leftLockToggle[0] + "\n";
+		output += "Auto: " + leftAutoClimbToggle[0] + "\n";
 		output += "Cooker 2 mode:\n";
 		output += "Angle: " + !rightPulleyToggle[0] + "\n";
 		output += "Velocity: "+ rightPulleyToggle[0] + "\n";
+		output += "Auto: " + rightAutoClimbToggle[0] + "\n";
 		output += "Lock: " + rightLockToggle[0] + "\n";
 		return output;
 	}
