@@ -83,11 +83,6 @@ public interface Constants {
 			// Arm
 				int A_MOTOR_CHAN = 8;                    // also bs
 				int A_MOTOR_CAR =1;                        // just to stop a pwm error
-				double A_SERVO_HOME = .5;
-				double A_SERVO_MAX = .9;
-				double A_SERVO_MIN = .2;
-				double A_SERVO_PICK = .3;
-				double A_SERVO_DUMP = .8;
 			// Griper
 				int G_SERVO_CHAN = 9;
 				int G_SERVO_CAR = 1;
@@ -101,16 +96,9 @@ public interface Constants {
 				int COOKER_STICK_2 = 3;
 		//Pot Constants
 				int TOP_PULLEY_CHAN = 4;
-				double TOP_PULLEY_MIN = 0;     //Made up for now
-				double TOP_PULLEY_MAX = 100;   // TODO TEST
-
 				int LEFT_PULLEY_CHAN = 3;
-				double LEFT_PULLEY_MIN = 0;
-				double LEFT_PULLEY_MAX = 100;
-				
 				int RIGHT_PULLEY_CHAN = 2;
-				double RIGHT_PULLEY_MIN = 0;
-				double RIGHT_PULLEY_MAX = 100;
 		//Gyro
 				int GYRO_CHAN = 1;   // Made up for now... TODO make sure these channels match
 }		
+	
