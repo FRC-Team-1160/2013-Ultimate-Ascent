@@ -19,9 +19,4 @@ public class Printer {
 		System.out.println(InputManager.getInstance());
 		System.out.println(TeleopManager.getInstance());
 	}
-	
-	public static void send(String key, double robotAngle){
-		System.out.println(key + ": " + robotAngle);
-	}
-	
 }
