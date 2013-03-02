@@ -23,9 +23,9 @@ public class PulleySystem {
 	}
 	
 	private PulleySystem() {
-		left = new Pulley(new Jaguar(Constants.P_LEFT_JAG_CAR, Constants.P_LEFT_JAG_CHAN), new DigitalServo(Constants.P_LEFT_SERVO_CAR, Constants.P_LEFT_SERVO_CHAN), new Servo(Constants.P_LEFT_LOCK_CAR, Constants.P_LEFT_LOCK_CHAN));
-		right = new Pulley(new Jaguar(Constants.P_RIGHT_JAG_CAR, Constants.P_RIGHT_JAG_CHAN), new DigitalServo(Constants.P_RIGHT_SERVO_CAR,Constants.P_RIGHT_SERVO_CHAN), new Servo(Constants.P_RIGHT_LOCK_CAR, Constants.P_RIGHT_LOCK_CHAN));
-		middle = new Pulley(new Jaguar(Constants.P_TOP_JAG_CAR, Constants.P_TOP_JAG_CHAN), new DigitalServo(Constants.P_TOP_SERVO_CAR, Constants.P_TOP_SERVO_CHAN), new Servo(Constants.P_TOP_LOCK_CAR, Constants.P_TOP_LOCK_CHAN));
+		left = new Pulley(new Jaguar(Constants.P_LEFT_JAG_CAR, Constants.P_LEFT_JAG_CHAN), new DigitalServo(Constants.P_LEFT_SERVO_CAR, Constants.P_LEFT_SERVO_CHAN), new Servo(Constants.P_LEFT_LOCK_CAR, Constants.P_LEFT_LOCK_CHAN), Constants.P_LEFT_LOCK_LOCKED, Constants.P_LEFT_LOCK_OPEN);
+		right = new Pulley(new Jaguar(Constants.P_RIGHT_JAG_CAR, Constants.P_RIGHT_JAG_CHAN), new DigitalServo(Constants.P_RIGHT_SERVO_CAR,Constants.P_RIGHT_SERVO_CHAN), new Servo(Constants.P_RIGHT_LOCK_CAR, Constants.P_RIGHT_LOCK_CHAN), Constants.P_RIGHT_LOCK_LOCKED, Constants.P_RIGHT_LOCK_OPEN);
+		middle = new Pulley(new Jaguar(Constants.P_TOP_JAG_CAR, Constants.P_TOP_JAG_CHAN), new DigitalServo(Constants.P_TOP_SERVO_CAR, Constants.P_TOP_SERVO_CHAN), new Servo(Constants.P_TOP_LOCK_CAR, Constants.P_TOP_LOCK_CHAN), Constants.P_TOP_LOCK_LOCKED, Constants.P_TOP_LOCK_OPEN);
 	}
 	
 	public void setPulleySystem(PulleySystemCommand command){

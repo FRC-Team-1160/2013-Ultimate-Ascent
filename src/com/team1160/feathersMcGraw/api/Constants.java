@@ -62,8 +62,8 @@ public interface Constants {
 				int P_RIGHT_SERVO_CAR = 1;
 				int P_RIGHT_LOCK_CHAN = 4;
 				int P_RIGHT_LOCK_CAR = 1;
-				double P_RIGHT_LOCK_LOCKED = .8;
-				double P_RIGHT_LOCK_OPEN = .49;
+				double P_RIGHT_LOCK_LOCKED = .33;
+				double P_RIGHT_LOCK_OPEN = .73	;
 				double P_RIGHT_HOME = .63;
 				double P_RIGHT_MAX = 1;
 				double P_RIGHT_MIN = .63;

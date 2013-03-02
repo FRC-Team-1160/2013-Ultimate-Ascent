@@ -11,17 +11,25 @@ public class Pulley {
 	protected Jaguar motor;
 	protected DigitalServo angle;
 	protected Servo lock;
+	protected double lockValue;
+	protected double unlockValue;
 	
-	public Pulley(Jaguar motor, DigitalServo angle, Servo lock){
+	public Pulley(Jaguar motor, DigitalServo angle, Servo lock, double lockValue, double unlockValue){
 		this.motor = motor;
 		this.angle = angle;
 		this.lock = lock;
+		this.lockValue = lockValue;
+		this.unlockValue = unlockValue;
 	}
 	
 	public void setPulley(PulleyCommand command){
 		this.motor.set(command.velocity);
 		this.angle.set(command.angle);
-		this.lock.set(0.0); // bullshit code TODO fix the lock command structure
+		if(command.locked){
+			this.lock.set(lockValue);
+		}else{
+			this.lock.set(unlockValue);
+		}
 	}
 	
 	
