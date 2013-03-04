@@ -49,7 +49,7 @@ public class ToggleBoard {
         rightAutoClimbToggle = new boolean[]{false, true};
         topAutoClimbToggle = new boolean[]{false, true};
         
-        floorToggle = new boolean[]{false, true};
+        floorToggle = new boolean[]{true, true};
     }
 	
     public void toggleTheThings(InputState is){   
@@ -118,7 +118,7 @@ public class ToggleBoard {
    
     }
 	
-	protected boolean[] toggle(boolean[] toggle, boolean input){  // in the toggle array you have two values
+	public boolean[] toggle(boolean[] toggle, boolean input){  // in the toggle array you have two values
 		if(toggle[1] && !input){                                  // [0] which is wether or not the toggle is on
 			toggle[1] = false;                                    // [1] which holds if the button was pressed last loop
 				if(toggle[0]){                                    // the input is if the button is pressed now

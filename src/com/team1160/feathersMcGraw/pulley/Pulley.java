@@ -1,4 +1,4 @@
-package com.team1160.feathersMcGraw.pulley;
+ package com.team1160.feathersMcGraw.pulley;
 
 import com.team1160.feathersMcGraw.api.DigitalServo;
 import com.team1160.feathersMcGraw.commands.PulleyCommand;
@@ -22,15 +22,17 @@ public class Pulley {
 		this.unlockValue = unlockValue;
 	}
 	
-	public void setPulley(PulleyCommand command){
-		this.motor.set(command.velocity);
-		this.angle.set(command.angle);
+	public void setPulley(PulleyCommand command, int multiplier){
+		// Multiplier is intended to be -1 -> 1 to show direction of motor
 		if(command.locked){
-			this.lock.set(lockValue);
+			this.lock.set(lockValue);	
 		}else{
 			this.lock.set(unlockValue);
 		}
-	}
+		
+		this.motor.set(command.velocity);
+		this.angle.set(command.angle);
+		}
 	
 	
 

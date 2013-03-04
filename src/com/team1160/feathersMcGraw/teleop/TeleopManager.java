@@ -38,6 +38,14 @@ private static TeleopManager _INSTANCE;
 	protected double j6;
 	protected double j7;
 	
+	protected double lastRightServo;
+	protected double lastLeftServo;
+	protected double lastMidServo;
+	
+	protected boolean rightSwap;
+	protected boolean leftSwap;
+	protected boolean midSwap;
+	
 	public static TeleopManager getInstance(){
 		if(_INSTANCE == null){
 			_INSTANCE =  new TeleopManager();
@@ -166,44 +174,40 @@ private static TeleopManager _INSTANCE;
 	} 
 	
 	private void forgePulleySystemCommand(){
-		currentCommand.pulleySystemCommand.left = forgePulleyCommand(inputState.toggleBoard.leftPulleyToggle[0], inputState.toggleBoard.leftLockToggle[0], inputState.leftArmStick.y, inputState.toggleBoard.leftAutoClimbToggle[0], 3, inputState.sensorState.tapeLengthLeft,currentCommand.pulleySystemCommand.left);
-		currentCommand.pulleySystemCommand.right = forgePulleyCommand(inputState.toggleBoard.rightPulleyToggle[0], inputState.toggleBoard.rightLockToggle[0], inputState.rightArmStick.y, inputState.toggleBoard.rightAutoClimbToggle[0], 1, inputState.sensorState.tapeLengthRight,currentCommand.pulleySystemCommand.right);
+		currentCommand.pulleySystemCommand.left = forgePulleyCommand(inputState.toggleBoard.leftPulleyToggle[0], inputState.toggleBoard.leftLockToggle[0], inputState.leftArmStick.y, inputState.toggleBoard.leftAutoClimbToggle[0], 3, inputState.sensorState.tapeLengthLeft,currentCommand.pulleySystemCommand.left,1);
+		currentCommand.pulleySystemCommand.right = forgePulleyCommand(inputState.toggleBoard.rightPulleyToggle[0], inputState.toggleBoard.rightLockToggle[0], inputState.rightArmStick.y, inputState.toggleBoard.rightAutoClimbToggle[0], 1, inputState.sensorState.tapeLengthRight,currentCommand.pulleySystemCommand.right, -1);
 		if(inputState.toggleBoard.pulleyToggle[0]){
-			currentCommand.pulleySystemCommand.top = forgePulleyCommand(inputState.toggleBoard.topPulleyToggle[0], false, inputState.driveStick.y, inputState.toggleBoard.topAutoClimbToggle[0],2, inputState.sensorState.tapeLengthTop,currentCommand.pulleySystemCommand.top);
+			currentCommand.pulleySystemCommand.top = forgePulleyCommand(inputState.toggleBoard.topPulleyToggle[0], false, inputState.driveStick.y, inputState.toggleBoard.topAutoClimbToggle[0],2, inputState.sensorState.tapeLengthTop,currentCommand.pulleySystemCommand.top,1);
 		}
-		
-		currentCommand.pulleySystemCommand.left.angle = checkRange(Constants.P_LEFT_MAX, Constants.P_LEFT_MIN, currentCommand.pulleySystemCommand.left.angle);
-		currentCommand.pulleySystemCommand.right.angle = checkRange(Constants.P_RIGHT_MAX, Constants.P_RIGHT_MIN, currentCommand.pulleySystemCommand.right.angle);
-		currentCommand.pulleySystemCommand.top.angle = checkRange(Constants.P_TOP_MAX, Constants.P_TOP_MIN, currentCommand.pulleySystemCommand.top.angle);
+
+		currentCommand.pulleySystemCommand.top.angle = Math.max(Math.min(currentCommand.pulleySystemCommand.top.angle, Constants.P_TOP_MAX), Constants.P_TOP_MIN);
+		currentCommand.pulleySystemCommand.left.angle = Math.max(Math.min(currentCommand.pulleySystemCommand.left.angle, Constants.P_LEFT_MAX), Constants.P_LEFT_MIN);
+		currentCommand.pulleySystemCommand.right.angle = Math.max(Math.min(currentCommand.pulleySystemCommand.right.angle, Constants.P_RIGHT_MAX), Constants.P_RIGHT_MIN);
 	}
 	
-	private double checkRange(double max, double min, double test){
-		if(test > max){
-			return max;
-		}else if(test < min){
-			return min;
-		}
-		return test;
-	}
-	private PulleyCommand forgePulleyCommand(boolean pulleyMode, boolean lock, double y, boolean auto, int side, double T, PulleyCommand command){
+	private PulleyCommand forgePulleyCommand(boolean pulleyMode, boolean lock, double y, boolean auto, int side, double T, PulleyCommand command, int mult){
+		/*
+		 * mult is inteaded to be used as a -1 -> 1 to invert controls because well you know....
+		 * 
+		 */
 		if(!auto){
+			y = y*mult;
 			if(!pulleyMode){
 				command.angle = (y+1)/2;
 				command.velocity = 0;
 			}else{
 				command.velocity = -y;
 			}
-			command.locked = lock;
 			
 		}else{
 			command.angle = getServoAngle(getTapeAngle(inputState.toggleBoard.floorToggle[0], side==2, inputState.sensorState.robotAngle,T), side);
-			command.velocity = -y;
+			command.velocity = -y*mult;
 		}
+		command.locked = lock;
 		return command;
 	}
         
 	private void forgeArmCommand(){
-		
 		if(inputState.toggleBoard.hutchArmToggle[0]){
 			currentCommand.armCommand.velocity = inputState.driveStick.y;
 		}else{

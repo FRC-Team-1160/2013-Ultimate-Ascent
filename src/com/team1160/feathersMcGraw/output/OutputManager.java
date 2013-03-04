@@ -27,7 +27,7 @@ public class OutputManager {
 		drivetrain = DriveTrain.getInstance();
 		pulleySystem = PulleySystem.getInstance();
 		arm = Arm.getInstance();
-	};
+	}
 		
 	public static OutputManager getInstance(){
 		if(_INSTANCE == null){

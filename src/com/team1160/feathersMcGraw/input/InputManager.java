@@ -49,15 +49,17 @@ public class InputManager {
 	
 	private InputState currentInputState;
 	
-	private Joystick js1;
-	private Joystick js2;
-	private Joystick js3;
+	private Joystick hutch;
+	private Joystick rightCooker;
+	private Joystick leftCooker;
 	
 	private Gyro gyro;
 	
-	private AnalogChannel middle;
+	private AnalogChannel top;
 	private AnalogChannel right;
 	private AnalogChannel left;
+	
+	boolean floor; //Temp as fuck get over it
 	
 	public static InputManager getInstance(){
 		if(_INSTANCE == null){
@@ -69,49 +71,56 @@ public class InputManager {
 	private InputManager(){
 		currentInputState = new InputState();
 		
-		gyro = new Gyro(Constants.GYRO_CHAN);
-		middle = new AnalogChannel(Constants.TOP_PULLEY_CHAN);
-		right = new AnalogChannel(Constants.RIGHT_PULLEY_CHAN);
-		left = new AnalogChannel(Constants.LEFT_PULLEY_CHAN);
+		floor = true;
 		
-		js1 = new Joystick(1);
-		js2 = new Joystick(2);
-		js3 = new Joystick(3);
+		gyro = new Gyro(Constants.GYRO_CHAN);
+		
+		top = new AnalogChannel(Constants.TOP_PULLEY_CHAN);
+		left = new AnalogChannel(Constants.LEFT_PULLEY_CHAN);
+		right = new AnalogChannel(Constants.RIGHT_PULLEY_CHAN);
+		
+		
+		
+		hutch = new Joystick(1);
+		rightCooker = new Joystick(2);
+		leftCooker = new Joystick(3);
 	}
 		
 	public InputState getInputState(){
-		forgeArmJoystick(js2, currentInputState.rightArmStick, -1);
-		forgeArmJoystick(js3, currentInputState.leftArmStick, 1);
-		forgeDriveJoystick(js1, currentInputState.driveStick);
+		forgeArmJoystick(rightCooker, currentInputState.rightArmStick);
+		forgeArmJoystick(leftCooker, currentInputState.leftArmStick);
+		forgeDriveJoystick(hutch, currentInputState.driveStick);
 		forgeSensorState(currentInputState.sensorState);
 		currentInputState.toggleBoard.toggleTheThings(currentInputState);	
+		floor = ArmStick.setRelease(floor, hutch.getRawButton(8));
+		currentInputState.toggleBoard.floorToggle = currentInputState.toggleBoard.toggle(currentInputState.toggleBoard.floorToggle, floor);
 		return currentInputState;
 	}
 	
-	private void forgeArmJoystick(Joystick js, ArmStick armStick, int multiplier){
+	private void forgeArmJoystick(Joystick js, ArmStick armStick){		
 		armStick.x = js.getX();
-		armStick.y = js.getY()*multiplier;
+		armStick.y = js.getY();
 		armStick.setLockRelease(js.getRawButton(2));
 		armStick.setAutoClimbRelease(js.getRawButton(3));
 		armStick.setPulleyRelease(js.getRawButton(1));
 	}
 	
 	private void forgeDriveJoystick(Joystick js, DriveStick driveStick){
-		driveStick.x = js.getX();
+		driveStick.x = -js.getX();
 		driveStick.y = js.getY();
-		driveStick.setClimbRelease(js.getRawButton(10));
-		driveStick.setPulleyRelease(js.getRawButton(1));
-		driveStick.setArmRelease(js.getRawButton(6));                  
-		driveStick.setAutoClimbRelease(js.getRawButton(3));
-		driveStick.setDriveRelease(js.getRawButton(4));
+		driveStick.setArmRelease(js.getRawButton(6));
 		driveStick.setGripRelease(js.getRawButton(5));
+		driveStick.setClimbRelease(js.getRawButton(11));
+		driveStick.setDriveRelease(js.getRawButton(4));
+		driveStick.setPulleyRelease(js.getRawButton(1));                  
+		driveStick.setAutoClimbRelease(js.getRawButton(3));
 	}
-
+	
 	private void forgeSensorState(SensorState ss){
 		ss.robotAngle = gyro.getAngle();
 		ss.tapeLengthLeft = tapeLength(left,3);
 		ss.tapeLengthRight = tapeLength(right,1);
-		ss.tapeLengthTop = tapeLength(middle,2);
+		ss.tapeLengthTop = tapeLength(top,2);
 	}
 	
 	private double tapeLength(AnalogChannel sensor, int side){   // A helper function to compute the length of the tape based on a pots vale

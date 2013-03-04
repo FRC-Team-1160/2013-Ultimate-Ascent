@@ -62,8 +62,8 @@ public interface Constants {
 				int P_RIGHT_SERVO_CAR = 1;
 				int P_RIGHT_LOCK_CHAN = 4;
 				int P_RIGHT_LOCK_CAR = 1;
-				double P_RIGHT_LOCK_LOCKED = .33;
-				double P_RIGHT_LOCK_OPEN = .73	;
+				double P_RIGHT_LOCK_LOCKED = .5;
+				double P_RIGHT_LOCK_OPEN = .8;
 				double P_RIGHT_HOME = .63;
 				double P_RIGHT_MAX = 1;
 				double P_RIGHT_MIN = .63;
@@ -82,7 +82,7 @@ public interface Constants {
 		// Arm system
 			// Arm
 				int A_MOTOR_CHAN = 8;                    // also bs
-				int A_MOTOR_CAR =1;                        // just to stop a pwm error
+				int A_MOTOR_CAR =2;                        // just to stop a pwm error
 			// Griper
 				int G_SERVO_CHAN = 9;
 				int G_SERVO_CAR = 1;

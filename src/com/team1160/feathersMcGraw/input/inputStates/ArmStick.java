@@ -44,7 +44,7 @@ public class ArmStick {
 		autoClimbRelease = setRelease(autoClimbRelease, button);
 	}
 	
-    protected boolean setRelease(boolean check, boolean button){
+    public static boolean setRelease(boolean check, boolean button){
    		if(button && check){
    			return false;
         }else if(!button && !check){
